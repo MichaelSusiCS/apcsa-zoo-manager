@@ -1,5 +1,6 @@
 import zoo.*;
 import java.util.*;
+
 public class Main {
   public static void main(String[] args){
     Zoo z = new Zoo(); Scanner sc = new Scanner(System.in);
@@ -12,9 +13,9 @@ public class Main {
           System.out.print("type (lion/eagle/snake) name age: ");
           String t=sc.next(); String n=sc.next(); int age=sc.nextInt();
           Animal a = switch(t){
-            case "lion" -> new Lion(n,age);
-            case "eagle"-> new Eagle(n,age);
-            default     -> new Snake(n,age);
+            case "lion"  -> new Lion(n,age);
+            case "eagle" -> new Eagle(n,age);
+            default      -> new Snake(n,age);
           };
           z.add(a); System.out.println("Added "+a);
         }

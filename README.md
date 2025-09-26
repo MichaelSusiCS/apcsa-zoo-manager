@@ -1,4 +1,5 @@
-# apcsa-zoo-manager
+# apcsa-zoo-manager (Java 17)
+
 Manage a tiny zoo: add/list animals, feed all, search by name.
 
 ## Run
@@ -6,14 +7,32 @@ Manage a tiny zoo: add/list animals, feed all, search by name.
 find src -name "*.java" | xargs javac -d out
 java -cp out Main
 
-### 3) Code files
-```bash
-cat > src/zoo/Animal.java << 'EOF'
-package zoo;
-public abstract class Animal {
-  protected final String name; protected int age;
-  public Animal(String name,int age){ this.name=name; this.age=age; }
-  public abstract String makeSound();
-  public String getName(){ return name; }
-  @Override public String toString(){ return getClass().getSimpleName()+"("+name+", "+age+")"; }
-}
+cd ~/dev/apcsa-zoo-manager
+
+cat > .github/workflows/build.yml << 'EOF'
+name: Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Show Java & list files
+        run: |
+          java -version
+          javac -version
+          ls -R
+
+      - name: Compile
+        run: |
+          mkdir -p out
+          javac -d out $(git ls-files '*.java')
+
+      - name: Smoke test (quit immediately)
+        run: |
+          printf "q\n" | java -cp out Main
